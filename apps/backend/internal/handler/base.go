@@ -6,9 +6,9 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/newrelic/go-agent/v3/integrations/nrpkgerrors"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/middleware"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/server"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/validation"
+	"github.com/MinaSamirSaad/go-tasker/internal/middleware"
+	"github.com/MinaSamirSaad/go-tasker/internal/server"
+	"github.com/MinaSamirSaad/go-tasker/internal/validation"
 )
 
 // Handler provides base functionality for all handlers

@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/MinaSamirSaad/go-boilerplate/internal/server"
+import "github.com/MinaSamirSaad/go-tasker/internal/server"
 
 type Repositories struct{}
 

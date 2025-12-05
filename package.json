@@ -1,5 +1,5 @@
 {
-  "name": "boilerplate",
+  "name": "tasker",
   "version": "1.0.0",
   "scripts": {
     "build": "turbo run build",
@@ -9,7 +9,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean && rimraf node_modules"
+    "clean": "turbo run clean && rm -rf node_modules"
   },
   "packageManager": "bun@1.3.2",
   "engines": {

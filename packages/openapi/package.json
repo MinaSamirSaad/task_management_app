@@ -1,5 +1,5 @@
 {
-  "name": "@boilerplate/openapi",
+  "name": "@tasker/openapi",
   "version": "1.0.0",
   "description": "Generates OpenAPI doc",
   "type": "module",
@@ -7,7 +7,7 @@
     "gen": "tsx src/gen.ts",
     "build": "tsc && tsc-alias",
     "dev": "wait-on ../zod/dist/index.js && tsc && (concurrently \"tsc -w\" \"tsc-alias -w\")",
-    "clean": "rimraf dist tsconfig.tsbuildinfo .turbo node_modules"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo .turbo node_modules"
   },
   "exports": {
     "./contracts": {
@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@anatine/zod-openapi": "^2.2.7",
-    "@boilerplate/zod": "workspace:*",
+    "@tasker/zod": "workspace:*",
     "@ts-rest/core": "^3.52.1",
     "@ts-rest/open-api": "^3.52.1",
     "ts-pattern": "^5.7.0",

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/MinaSamirSaad/go-boilerplate/internal/config"
-	loggerConfig "github.com/MinaSamirSaad/go-boilerplate/internal/logger"
+	"github.com/MinaSamirSaad/go-tasker/internal/config"
+	loggerConfig "github.com/MinaSamirSaad/go-tasker/internal/logger"
 	pgxzero "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

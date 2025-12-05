@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bufio"
 	"os"
 	"strings"
 
@@ -18,6 +19,7 @@ type Config struct {
 	Redis         RedisConfig          `koanf:"redis" validate:"required"`
 	Integration   IntegrationConfig    `koanf:"integration" validate:"required"`
 	Observability *ObservabilityConfig `koanf:"observability"`
+	AWS           AWSConfig            `koanf:"aws" validate:"required"`
 }
 
 type Primary struct {
@@ -45,6 +47,14 @@ type DatabaseConfig struct {
 	ConnMaxIdleTime int    `koanf:"conn_max_idle_time" validate:"required"`
 }
 
+type AWSConfig struct {
+	Region          string `koanf:"region" validate:"required"`
+	AccessKeyID     string `koanf:"access_key_id" validate:"required"`
+	SecretAccessKey string `koanf:"secret_access_key" validate:"required"`
+	UploadBucket    string `koanf:"upload_bucket" validate:"required"`
+	EndpointURL     string `koanf:"endpoint_url"` // optional for AWS
+}
+
 type RedisConfig struct {
 	Address string `koanf:"address" validate:"required"`
 }
@@ -60,10 +70,13 @@ type AuthConfig struct {
 func LoadConfig() (*Config, error) {
 	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr}).With().Timestamp().Logger()
 
+	// Try to load local dotenv files into the process environment so
+	_ = loadDotEnvFiles([]string{".env", "apps/backend/.env"})
+
 	k := koanf.New(".")
 
-	err := k.Load(env.Provider("BOILERPLATE_", ".", func(s string) string {
-		return strings.ToLower(strings.TrimPrefix(s, "BOILERPLATE_"))
+	err := k.Load(env.Provider("TASKER_", ".", func(s string) string {
+		return strings.ToLower(strings.TrimPrefix(s, "TASKER_"))
 	}), nil)
 
 	if err != nil {
@@ -90,8 +103,22 @@ func LoadConfig() (*Config, error) {
 	}
 
 	// Override service name and environment from primary config
-	mainConfig.Observability.ServiceName = "boilerplate"
+	mainConfig.Observability.ServiceName = "tasker"
 	mainConfig.Observability.Environment = mainConfig.Primary.Env
+
+	// Normalize Redis address: allow URLs like redis://host:port in .env
+	if mainConfig.Redis.Address != "" {
+		addr := strings.TrimSpace(mainConfig.Redis.Address)
+		// If user supplied a redis:// or rediss:// URL, strip the scheme
+		if strings.HasPrefix(addr, "redis://") {
+			addr = strings.TrimPrefix(addr, "redis://")
+		} else if strings.HasPrefix(addr, "rediss://") {
+			// rediss implies TLS; for now we strip the scheme and leave
+			// TLS handling to be implemented if needed.
+			addr = strings.TrimPrefix(addr, "rediss://")
+		}
+		mainConfig.Redis.Address = addr
+	}
 
 	// Validate observability config
 	if err := mainConfig.Observability.Validate(); err != nil {
@@ -99,4 +126,40 @@ func LoadConfig() (*Config, error) {
 	}
 
 	return mainConfig, nil
+}
+
+// loadDotEnvFiles reads the provided files (in order) and sets each
+// KEY=VALUE into the process environment. Lines starting with `#`
+// or empty lines are ignored. Values may be quoted.
+func loadDotEnvFiles(paths []string) error {
+	for _, p := range paths {
+		f, err := os.Open(p)
+		if err != nil {
+			// ignore missing files
+			continue
+		}
+		scanner := bufio.NewScanner(f)
+		for scanner.Scan() {
+			line := strings.TrimSpace(scanner.Text())
+			if line == "" || strings.HasPrefix(line, "#") {
+				continue
+			}
+			// split at first '='
+			parts := strings.SplitN(line, "=", 2)
+			if len(parts) != 2 {
+				continue
+			}
+			key := strings.TrimSpace(parts[0])
+			val := strings.TrimSpace(parts[1])
+			// strip optional surrounding quotes
+			if len(val) >= 2 {
+				if (val[0] == '"' && val[len(val)-1] == '"') || (val[0] == '\'' && val[len(val)-1] == '\'') {
+					val = val[1 : len(val)-1]
+				}
+			}
+			_ = os.Setenv(key, val)
+		}
+		f.Close()
+	}
+	return nil
 }

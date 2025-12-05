@@ -7,13 +7,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/MinaSamirSaad/go-tasker/internal/config"
+	"github.com/MinaSamirSaad/go-tasker/internal/database"
+	"github.com/MinaSamirSaad/go-tasker/internal/lib/job"
+	loggerPkg "github.com/MinaSamirSaad/go-tasker/internal/logger"
+	"github.com/MinaSamirSaad/go-tasker/internal/storage"
 	"github.com/newrelic/go-agent/v3/integrations/nrredis-v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/config"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/database"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/lib/job"
-	loggerPkg "github.com/MinaSamirSaad/go-boilerplate/internal/logger"
 )
 
 type Server struct {
@@ -24,6 +25,7 @@ type Server struct {
 	Redis         *redis.Client
 	httpServer    *http.Server
 	Job           *job.JobService
+	S3            *storage.S3Storage
 }
 
 func New(cfg *config.Config, logger *zerolog.Logger, loggerService *loggerPkg.LoggerService) (*Server, error) {

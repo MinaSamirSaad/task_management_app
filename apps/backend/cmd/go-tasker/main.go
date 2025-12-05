@@ -8,14 +8,14 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/MinaSamirSaad/go-boilerplate/internal/config"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/database"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/handler"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/logger"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/repository"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/router"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/server"
-	"github.com/MinaSamirSaad/go-boilerplate/internal/service"
+	"github.com/MinaSamirSaad/go-tasker/internal/config"
+	"github.com/MinaSamirSaad/go-tasker/internal/database"
+	"github.com/MinaSamirSaad/go-tasker/internal/handler"
+	"github.com/MinaSamirSaad/go-tasker/internal/logger"
+	"github.com/MinaSamirSaad/go-tasker/internal/repository"
+	"github.com/MinaSamirSaad/go-tasker/internal/router"
+	"github.com/MinaSamirSaad/go-tasker/internal/server"
+	"github.com/MinaSamirSaad/go-tasker/internal/service"
 )
 
 const DefaultContextTimeout = 30
