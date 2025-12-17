@@ -57,6 +57,7 @@ type AWSConfig struct {
 
 type RedisConfig struct {
 	Address string `koanf:"address" validate:"required"`
+	Password string `koanf:"password"`
 }
 
 type IntegrationConfig struct {
