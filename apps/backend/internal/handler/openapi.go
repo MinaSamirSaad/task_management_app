@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/MinaSamirSaad/go-tasker/internal/server"
-
 	"github.com/labstack/echo/v4"
 )
 
