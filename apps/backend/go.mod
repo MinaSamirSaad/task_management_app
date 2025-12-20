@@ -59,6 +59,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/hibiken/asynq v0.25.1 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/tern/v2 v2.3.3 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/labstack/echo/v4 v4.13.4 // indirect
@@ -89,6 +90,8 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
+	github.com/spf13/cobra v1.10.2 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/testcontainers/testcontainers-go v0.40.0 // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
